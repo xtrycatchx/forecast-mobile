@@ -23,7 +23,8 @@
     "eslint-plugin-react": "^7.10.0",
     "jest": "23.4.2",
     "prettier-eslint": "^8.8.2",
-    "react-test-renderer": "16.4.1"
+    "react-test-renderer": "16.4.1",
+    "schedule": "^0.4.0"
   },
   "jest": {
     "preset": "react-native"

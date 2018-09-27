@@ -1,7 +1,6 @@
 
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   View,
@@ -11,53 +10,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Platform,
-  ViewPropTypes as RNViewPropTypes,
 } from 'react-native';
 
 import styles from './style';
 
-const ViewPropTypes = RNViewPropTypes || View.propTypes;
-
 let componentIndex = 0;
-
-const propTypes = {
-  data: PropTypes.array,
-  onChange: PropTypes.func,
-  onModalOpen: PropTypes.func,
-  onModalClose: PropTypes.func,
-  keyExtractor: PropTypes.func,
-  labelExtractor: PropTypes.func,
-  visible: PropTypes.bool,
-  closeOnChange: PropTypes.bool,
-  initValue: PropTypes.string,
-  animationType: Modal.propTypes.animationType,
-  style: ViewPropTypes.style,
-  selectStyle: ViewPropTypes.style,
-  selectTextStyle: Text.propTypes.style,
-  optionStyle: ViewPropTypes.style,
-  optionTextStyle: Text.propTypes.style,
-  optionContainerStyle: ViewPropTypes.style,
-  sectionStyle: ViewPropTypes.style,
-  childrenContainerStyle: ViewPropTypes.style,
-  touchableStyle: ViewPropTypes.style,
-  touchableActiveOpacity: PropTypes.number,
-  sectionTextStyle: Text.propTypes.style,
-  cancelContainerStyle: ViewPropTypes.style,
-  cancelStyle: ViewPropTypes.style,
-  cancelTextStyle: Text.propTypes.style,
-  overlayStyle: ViewPropTypes.style,
-  cancelText: PropTypes.string,
-  disabled: PropTypes.bool,
-  supportedOrientations: Modal.propTypes.supportedOrientations,
-  keyboardShouldPersistTaps: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  backdropPressToClose: PropTypes.bool,
-  accessible: PropTypes.bool,
-  scrollViewAccessibilityLabel: PropTypes.string,
-  cancelButtonAccessibilityLabel: PropTypes.string,
-  passThruProps: PropTypes.object,
-  modalOpenerHitSlop: PropTypes.object,
-  customSelector: PropTypes.node,
-};
 
 const defaultProps = {
   data: [],
@@ -179,6 +136,11 @@ export default class PickerWrapper extends React.Component {
         </View>
       </TouchableOpacity>)
 
+    modalClose = () => {
+      const closeOverlay = this.props.backdropPressToClose;
+      closeOverlay && this.close()
+    }
+
     renderOptionList = () => {
       const options = this.props.data.map((item, index) => {
         if (item.section) {
@@ -187,15 +149,11 @@ export default class PickerWrapper extends React.Component {
         return this.renderOption(item, index === this.props.data.length - 1);
       });
 
-      const closeOverlay = this.props.backdropPressToClose;
-
       return (
         <TouchableWithoutFeedback
           key={`modalSelector${componentIndex++}`}
           accessible={false}
-          onPress={() => {
-            closeOverlay && this.close();
-          }}
+          onPress={this.modalClose}
         >
           <View style={[styles.overlayStyle, this.props.overlayStyle]}>
             <View style={[styles.optionContainer, this.props.optionContainerStyle]}>
@@ -270,5 +228,4 @@ export default class PickerWrapper extends React.Component {
     }
 }
 
-PickerWrapper.propTypes = propTypes;
 PickerWrapper.defaultProps = defaultProps;
